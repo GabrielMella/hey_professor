@@ -1,0 +1,74 @@
+version: "3.7"
+
+services:
+    # image project
+    app:
+        container_name: hey_professor
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: hey_professor
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - redis
+        networks:
+            - heyProfessor
+    # nginx
+    nginx:
+        container_name: hey_professor-nginx
+        image: nginx:alpine
+        restart: unless-stopped
+        ports:
+            - "8080:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        networks:
+            - heyProfessor
+
+    # db postgres
+    postgres:
+        container_name: hey_professor_database
+        image: postgres
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: 2291755cd2@
+            PGDATA: /data/postgres
+        volumes:
+            - ./postgres:/data/postgres
+        ports:
+            - "5432:5432"
+        networks:
+            - heyProfessor
+        restart: unless-stopped
+
+    # queue
+    queue:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        container_name: hey_professor-queue
+        image: calculator-queue
+        restart: unless-stopped
+        command: "php artisan queue:work"
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - redis
+            - app
+        networks:
+            - heyProfessor
+
+    # redis
+    redis:
+        container_name: hey_professor-redis
+        image: redis:latest
+        networks:
+            - heyProfessor
+
+networks:
+    heyProfessor:
+        driver: bridge
