@@ -17,3 +17,10 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/postgres
+postgres/pg_wal/000000010000000000000001
+postgres/base/1/pg_internal.init
+postgres/base/5/pg_internal.init
+postgres/global/pg_control
+postgres/global/pg_internal.init
+postgres/pg_wal/000000010000000000000001
