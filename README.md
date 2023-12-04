@@ -2,3 +2,4 @@
 [![CI develop](https://github.com/GabrielMella/hey_professor/actions/workflows/laravel-CI.yml/badge.svg?branch=develop)](https://github.com/GabrielMella/hey_professor/actions/workflows/laravel-CI.yml)
 
 ## About Hey Professor
+
