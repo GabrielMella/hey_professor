@@ -11,7 +11,7 @@ Route::get('/', function () {
         return to_route('dashboard');
     }
 
-    return to_route('welcome');
+    return to_route('dashboard');
 });
 
 Route::get('/dashboard', function () {
