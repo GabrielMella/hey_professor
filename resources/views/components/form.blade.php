@@ -5,7 +5,7 @@
     'delete' => null
 ])
 
-<form action="" method="post">
+<form action="{{ $action }}" method="post" {{ $attributes }}>
     @csrf
 
     @if ($put)
