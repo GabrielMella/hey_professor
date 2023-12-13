@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,14 +20,4 @@ class Question extends Model
         return $this->hasMany(Vote::class);
     }
 
-    public function likes(): Attribute
-    {
-        // Irá no banco de dados, somar todos os likes e retornar
-        return new Attribute(get: fn () => $this->votes()->sum('like'));
-    }
-
-    public function unlikes(): Attribute
-    {
-        return new Attribute(get: fn () => $this->votes()->sum('unlike'));
-    }
 }
