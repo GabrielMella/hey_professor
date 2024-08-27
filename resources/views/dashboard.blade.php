@@ -6,8 +6,8 @@
     </x-slot>
 
     <x-container>
-        <x-form post :action="route('question.store')">
-
+        <form method="POST" action="{{route('question.store')}}">
+            @csrf
             <x-textarea label="Question" name="question"/>
 
             <x-btn.primary>
@@ -18,7 +18,7 @@
                 Cancel
             </x-btn.reset>
 
-        </x-form>
+        </form>
     </x-container>
 
 </x-app-layout>

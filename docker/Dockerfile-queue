@@ -1,0 +1,37 @@
+FROM php:8.2-fpm-alpine
+
+RUN apk add --no-cache \
+    libpng-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    libpq-dev \
+    oniguruma-dev \
+    autoconf \
+    gcc \
+    make \
+    libc-dev \
+    lz4-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif bcmath pdo pdo_pgsql
+
+# Redis
+RUN apk add --no-cache \
+    redis \
+    && pecl install redis \
+    && docker-php-ext-enable redis
+
+# Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www
+
+COPY ../composer.json ../composer.lock ./
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+COPY ../ .
+
+RUN adduser -D laraveluser && chown -R laraveluser:laraveluser /var/www
+
+USER laraveluser
+
+CMD ["php", "artisan", "queue:work"]
