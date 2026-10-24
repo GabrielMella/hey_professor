@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Question;
 use Closure;
 use Illuminate\Http\{RedirectResponse};
+use Illuminate\View\View;
 
 class QuestionController extends Controller
 {
@@ -19,8 +20,21 @@ class QuestionController extends Controller
                 }],
         ]);
 
+        $attributes['user_id'] = auth()->id();
+
         Question::query()->create($attributes);
 
         return redirect()->route('dashboard');
     }
+
+    public function history(): View
+    {
+        $questions = Question::query()
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->paginate(10);
+
+        return view('questions-history', compact('questions'));
+    }
 }
+
