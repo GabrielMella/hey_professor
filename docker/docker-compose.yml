@@ -51,7 +51,6 @@ services:
         container_name: hey_professor_queue
         image: hey_professor_queue
         restart: unless-stopped
-        command: "php artisan queue:work"
         volumes:
             - ../:/var/www
         depends_on:
