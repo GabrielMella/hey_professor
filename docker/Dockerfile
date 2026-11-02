@@ -31,7 +31,7 @@ FROM php:8.2-fpm-alpine
 COPY --from=build /usr/local /usr/local
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Rruntime dependencies
+# Runtime dependencies
 RUN apk add --no-cache \
     git \
     curl \
@@ -55,6 +55,9 @@ RUN apk add --no-cache \
 WORKDIR /var/www
 
 COPY ../package.json ./
-RUN npm install
+RUN npm install && chown -R www-data:www-data /var/www
 
-USER $user
+# www-data (uid 82) is the built-in non-root user in the php:8.2-fpm-alpine image.
+USER www-data
+
+ENTRYPOINT ["php-fpm"]

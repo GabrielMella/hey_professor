@@ -34,4 +34,4 @@ RUN adduser -D laraveluser && chown -R laraveluser:laraveluser /var/www
 
 USER laraveluser
 
-CMD ["php", "artisan", "queue:work"]
+ENTRYPOINT ["php", "artisan", "queue:work"]
