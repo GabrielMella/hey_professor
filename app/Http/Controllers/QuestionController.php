@@ -19,7 +19,16 @@ class QuestionController extends Controller
                 }],
         ]);
 
-        Question::query()->create($attributes);
+        Question::create([...$attributes, 'user_id' => auth()->id()]);
+
+        return redirect()->route('dashboard');
+    }
+
+    public function destroy(Question $question): RedirectResponse
+    {
+        abort_if($question->user_id !== auth()->id(), 403);
+
+        $question->delete();
 
         return redirect()->route('dashboard');
     }
